@@ -1,0 +1,24 @@
+# Compiled binaries
+*.dll
+*.exe
+*.pdb
+
+# User-specific files
+*.suo
+*.user
+
+# Database files
+*.mdf
+*.ldf
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backups
+_db_backups/
+
+# Archives
+*.rar
+*.zip

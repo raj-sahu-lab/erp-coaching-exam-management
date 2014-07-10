@@ -1,0 +1,102 @@
+<%@ Master Language="VB" CodeFile="pt-website.master.vb" Inherits="pt_website" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>Enquiry Management</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="ddmenu/ddmenu.css" rel="stylesheet" type="text/css" />
+    <script src="ddmenu/ddmenu.js" type="text/javascript"></script>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+            <div id="topPanel">
+                <ul>
+                    <li><a href="Enquiry_list.aspx">List</a></li>
+                    <li><a href="followup.aspx">Follow up</a></li>
+                    <li><a href="newenquiry.aspx">New Enquiry</a></li>
+                    <li class="active">Home</li>
+                    <li><a href="admin_login.aspx">Admin Login</a></li>
+                    <li><a href="logout.aspx">User Logout</a></li>
+                </ul>
+                <a href="home.aspx"><img src="images/logo.png" title="[Company Name]" 
+                    alt="Logo PT" border="0" /></a>
+                    <div id="headerPanel1">
+	                <h2>New enquiry</h2>
+	                    <p>Add details of new enquiry </p>
+	                    <a href="#">&nbsp;</a>
+	                </div>
+	                
+                    <div id="headerPanel2">
+	                <h2>Follow<br />
+                        up</h2>
+	                    <p>Enter follow up details </p>
+                        <a href="#">&nbsp;</a>
+                    </div>
+                    
+                    <div id="headerPanel3">
+	                <h2>Enquiry<br />
+                        list</h2>
+	                    <p>List of open enquiries</p>
+	                    <a href="#">&nbsp;</a>
+	                </div>
+                </div>
+                
+                   <div id="bodyPanel">
+	                <h2>Manage Enquiries</h2>
+	                    <p>This is an online enquiry management system through which you can keep track of 
+                           all tentative students their details and contact numbers.<br />
+                           You can maintain a detailed follow up with the date of the enquiries recieved.<br />
+                           Enquiry details can be searched with the mobile no showing the latest follow up done
+                        </p>
+	                
+	                <h3>Testimonials</h3>
+	                <div id="testimonial">
+	                    <p><span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
+                                 Lorem Ipsum has been the.ing essentially unchanged. It was popularised in 
+                            the 1960s with the release of Letraset sheets containing Lorem Ipsum</p>
+	                    <p class="moretwo"><a href="#">More</a></p>
+                    </div>
+	                
+	                <h4>Solutions</h4>
+	                    <ul>
+	                    <li><span>Popularised in the 1960s with</span> </li>
+	                    <li><span>The release of Letraset sheets</span> </li>
+	                    <li><span>Containing Lorem Ipsum</span> </li>
+	                    <li><span>Lorem unknownindustry&#39;s </span> </li>
+	                    <li><span>Standard dummy text ever </span> </li>
+	                    <li><span>Since the 1500s, when an</span> </li>
+	                    <li>Unknown printer took a galley  </li>
+	                    </ul>
+                   </div>
+                   <div id="footerPanel">
+                        <div id="footerbodyPanel">
+                          <ul>
+                            <li><a href="#">Home</a> | </li>
+                            <li><a href="#">Follow Up</a> | </li>
+                            <li><a href="#">Admin Login</a> | </li>
+                            <li><a href="#">User</a> | </li>
+                            <li><a href="#">Contact</a> | </li>
+                          </ul>
+                            <p class="copyright">©[Company Name] all right reaserved</p>
+                          <ul class="templateworld">
+  	                        <li>Design By:</li>
+	                        <li><a href="http://www.sicservices.co.in" target="_blank">S.I.C. services</a></li>
+                          </ul>
+                            <div id="footerhtmlPanel"><a href="http://www.[CompanyName].com" target="_blank">
+                            Owner</a></div>
+                            <div id="footercssPanel"><a href="http://www.godaddy.com" target="_blank">
+                             Host</a></div>
+                        </div>
+                    </div>
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>
