@@ -22,3 +22,6 @@ _db_backups/
 # Archives
 *.rar
 *.zip
+node_modules/
+.env
+*.env.local
