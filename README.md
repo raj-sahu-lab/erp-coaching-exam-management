@@ -2,6 +2,8 @@
 
 A complete ERP system for coaching institutes to manage student enrollments, exam registrations, fee collection, scholarship tracking, and multi-center operations.
 
+> **Note:** This is a 2014 portfolio codebase. SQL queries use string concatenation and passwords are stored without hashing — standard practice before modern OWASP awareness. These would be the first items parameterized and hashed before any production deployment today.
+
 ## Built: 2014
 
 ## Tech Stack
