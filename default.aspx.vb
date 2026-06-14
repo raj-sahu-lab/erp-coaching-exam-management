@@ -16,7 +16,9 @@ Partial Class index
 
     Protected Sub login_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles login.Click
         If dd_role.SelectedItem.Text = "Counsellor" Then
-            cmd.CommandText = "select * from user_login where username='" & username.Text & "' and Password=[DB_PASSWORD]" & password.Text & "' "
+            cmd.CommandText = "select * from user_login where username=@username and password=@password"
+            cmd.Parameters.AddWithValue("@username", username.Text)
+            cmd.Parameters.AddWithValue("@password", password.Text)
             dr = cmd.ExecuteReader()
             If Not dr.Read Then
                 username.Text = ""
@@ -28,7 +30,9 @@ Partial Class index
             End If
 
         ElseIf dd_role.SelectedItem.Text = "Admin" Then
-            cmd.CommandText = "select * from admin_login where username='" & username.Text & "' and Password=[DB_PASSWORD]" & password.Text & "' "
+            cmd.CommandText = "select * from admin_login where username=@username and password=@password"
+            cmd.Parameters.AddWithValue("@username", username.Text)
+            cmd.Parameters.AddWithValue("@password", password.Text)
             dr = cmd.ExecuteReader()
             If Not dr.Read Then
                 username.Text = ""
@@ -40,7 +44,9 @@ Partial Class index
             End If
 
         ElseIf dd_role.SelectedItem.Text = "Center Head" Then
-            cmd.CommandText = "select * from center_head_login where username='" & username.Text & "' and Password=[DB_PASSWORD]" & password.Text & "' "
+            cmd.CommandText = "select * from center_head_login where username=@username and password=@password"
+            cmd.Parameters.AddWithValue("@username", username.Text)
+            cmd.Parameters.AddWithValue("@password", password.Text)
             dr = cmd.ExecuteReader()
             If Not dr.Read Then
                 username.Text = ""
