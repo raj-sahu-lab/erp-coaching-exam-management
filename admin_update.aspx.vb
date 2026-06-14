@@ -31,7 +31,8 @@ Partial Class Admin_update
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "select * from enquiry_details where mobile = '" & mobile_search.Text & "' "
+        cmd.CommandText = "select * from enquiry_details where mobile = @mobile"
+        cmd.Parameters.AddWithValue("@mobile", mobile_search.Text)
         dr = cmd.ExecuteReader()
         If Not dr.Read Then
             'MessageBox.Show("Data not found", "NOT FOUND", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -75,12 +76,32 @@ Partial Class Admin_update
             Response.Redirect("session_exp.aspx")
         End Try
         Try
+            cmd.Parameters.Clear()
             cmd.Parameters.AddWithValue("@date", enq.Text)
-            cmd.CommandText = "update enquiry_details set student_name = '" & student_name.Text & "',gender = gender, enq = @date, college = '" & dd_college.SelectedItem.Text & "', degree = '" & dd_degree.SelectedItem.Text & "', year_sem = '" & dd_year_sem.SelectedItem.Text & "', branch = '" & dd_branch.SelectedItem.Text & "', course_enq = '" & dd_course.SelectedItem.Text & "', landline = '" & landline.Text & "', mobile = '" & mobile.Text & "', email = '" & email.Text & "', mode_enq = '" & dd_mode.SelectedItem.Text & "', councellor_name = '" & dd_councellor.SelectedItem.Text & "', status_enq = '" & status.Text & "' where mobile = '" & mobile_search.Text & "'"
+            cmd.Parameters.AddWithValue("@student_name", student_name.Text)
+            cmd.Parameters.AddWithValue("@college", dd_college.SelectedItem.Text)
+            cmd.Parameters.AddWithValue("@degree", dd_degree.SelectedItem.Text)
+            cmd.Parameters.AddWithValue("@year_sem", dd_year_sem.SelectedItem.Text)
+            cmd.Parameters.AddWithValue("@branch", dd_branch.SelectedItem.Text)
+            cmd.Parameters.AddWithValue("@course_enq", dd_course.SelectedItem.Text)
+            cmd.Parameters.AddWithValue("@landline", landline.Text)
+            cmd.Parameters.AddWithValue("@mobile_new", mobile.Text)
+            cmd.Parameters.AddWithValue("@email", email.Text)
+            cmd.Parameters.AddWithValue("@mode_enq", dd_mode.SelectedItem.Text)
+            cmd.Parameters.AddWithValue("@councellor_name", dd_councellor.SelectedItem.Text)
+            cmd.Parameters.AddWithValue("@status_enq", status.Text)
+            cmd.Parameters.AddWithValue("@mobile_search", mobile_search.Text)
+            cmd.CommandText = "update enquiry_details set student_name = @student_name, gender = gender, enq = @date, college = @college, degree = @degree, year_sem = @year_sem, branch = @branch, course_enq = @course_enq, landline = @landline, mobile = @mobile_new, email = @email, mode_enq = @mode_enq, councellor_name = @councellor_name, status_enq = @status_enq where mobile = @mobile_search"
             cmd.ExecuteNonQuery()
-            cmd.CommandText = "if exists(select mobileno_followup from fee_followup where mobileno_followup = '" & mobile_search.Text & "') update fee_followup set mobileno_followup = '" & mobile.Text & "' where mobileno_followup = '" & mobile_search.Text & "'"
+            cmd.Parameters.Clear()
+            cmd.Parameters.AddWithValue("@mobile_new", mobile.Text)
+            cmd.Parameters.AddWithValue("@mobile_search", mobile_search.Text)
+            cmd.CommandText = "if exists(select mobileno_followup from fee_followup where mobileno_followup = @mobile_search) update fee_followup set mobileno_followup = @mobile_new where mobileno_followup = @mobile_search"
             cmd.ExecuteNonQuery()
-            cmd.CommandText = "if exists(select mobileno_fee from fee_collect where mobileno_fee = '" & mobile_search.Text & "') update fee_collect set mobileno_fee = '" & mobile.Text & "' where mobileno_fee = '" & mobile_search.Text & "'"
+            cmd.Parameters.Clear()
+            cmd.Parameters.AddWithValue("@mobile_new", mobile.Text)
+            cmd.Parameters.AddWithValue("@mobile_search", mobile_search.Text)
+            cmd.CommandText = "if exists(select mobileno_fee from fee_collect where mobileno_fee = @mobile_search) update fee_collect set mobileno_fee = @mobile_new where mobileno_fee = @mobile_search"
             cmd.ExecuteNonQuery()
         Catch ex As Exception
             'MessageBox.Show("Data Not Updated. Either The Mobile No Already Exists Or There Was An Internal Error!! ", " NOT UPDATED", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -130,7 +151,9 @@ Partial Class Admin_update
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "delete from enquiry_details where mobile = '" & mobile.Text & "'"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "delete from enquiry_details where mobile = @mobile"
+        cmd.Parameters.AddWithValue("@mobile", mobile.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception

@@ -29,7 +29,8 @@ Partial Class admin_master_set
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "delete from m_college where college_name = '" & dd_college.SelectedItem.Text & "'"
+        cmd.CommandText = "delete from m_college where college_name = @college_name"
+        cmd.Parameters.AddWithValue("@college_name", dd_college.SelectedItem.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -57,7 +58,9 @@ Partial Class admin_master_set
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "insert into m_college (college_name) values ('" & college_name.Text & "')"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "insert into m_college (college_name) values (@college_name)"
+        cmd.Parameters.AddWithValue("@college_name", college_name.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -86,7 +89,9 @@ Partial Class admin_master_set
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "delete from m_degree where degree_name = '" & dd_degree.SelectedItem.Text & "'"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "delete from m_degree where degree_name = @degree_name"
+        cmd.Parameters.AddWithValue("@degree_name", dd_degree.SelectedItem.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -115,7 +120,9 @@ Partial Class admin_master_set
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "insert into m_degree (degree_name) values ('" & degree_name.Text & "')"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "insert into m_degree (degree_name) values (@degree_name)"
+        cmd.Parameters.AddWithValue("@degree_name", degree_name.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -144,7 +151,9 @@ Partial Class admin_master_set
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "delete from m_branch where branch_name = '" & dd_branch.SelectedItem.Text & "'"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "delete from m_branch where branch_name = @branch_name"
+        cmd.Parameters.AddWithValue("@branch_name", dd_branch.SelectedItem.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -173,7 +182,9 @@ Partial Class admin_master_set
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "insert into m_branch (branch_name) values ('" & branch_name.Text & "')"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "insert into m_branch (branch_name) values (@branch_name)"
+        cmd.Parameters.AddWithValue("@branch_name", branch_name.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -205,7 +216,9 @@ Partial Class admin_master_set
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "delete from course_details where course_name = '" & dd_course.SelectedItem.Text & "'"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "delete from course_details where course_name = @course_name"
+        cmd.Parameters.AddWithValue("@course_name", dd_course.SelectedItem.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -233,7 +246,9 @@ Partial Class admin_master_set
         Catch NullReferenceException As Exception
             Response.Redirect("session_exp.aspx")
         End Try
-        cmd.CommandText = "insert into course_details (course_name) values ('" & course_name.Text & "')"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "insert into course_details (course_name) values (@course_name)"
+        cmd.Parameters.AddWithValue("@course_name", course_name.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception

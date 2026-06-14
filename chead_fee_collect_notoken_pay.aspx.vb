@@ -19,7 +19,8 @@ Partial Class chead_fee_collect_notoken_pay
             Dim mob As String
             mob = Session.Item("mobile").ToString()
             Mobile.Text = mob
-            cmd.CommandText = "select inst1, due_date1, paid1, pay_date1, councellor1, inst2, due_date2, paid2, pay_date2, councellor2 from fee_collect where mobileno_fee = " & mob & ""
+            cmd.CommandText = "select inst1, due_date1, paid1, pay_date1, councellor1, inst2, due_date2, paid2, pay_date2, councellor2 from fee_collect where mobileno_fee = @mob"
+            cmd.Parameters.AddWithValue("@mob", mob)
             dr = cmd.ExecuteReader()
             If dr.Read() Then
                 If dr("inst1") Is DBNull.Value Then
@@ -107,17 +108,30 @@ Partial Class chead_fee_collect_notoken_pay
         remfee = Val(coursefee) - (Val(paid1.Text) + Val(paid2.Text))
         remark = Session.Item("remark").ToString()
 
+        cmd.Parameters.Clear()
+        cmd.Parameters.AddWithValue("@mobile", mobile.Text)
+        cmd.Parameters.AddWithValue("@remfee", remfee)
+        cmd.Parameters.AddWithValue("@inst1", inst1.Text)
         cmd.Parameters.AddWithValue("@due_date1", due_date1.Text)
+        cmd.Parameters.AddWithValue("@paid1", paid1.Text)
         cmd.Parameters.AddWithValue("@pay_date1", pay_date1.Text)
+        cmd.Parameters.AddWithValue("@councellor1", dd_councellor1.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@inst2", inst2.Text)
         cmd.Parameters.AddWithValue("@due_date2", due_date2.Text)
+        cmd.Parameters.AddWithValue("@paid2", paid2.Text)
         cmd.Parameters.AddWithValue("@pay_date2", pay_date2.Text)
+        cmd.Parameters.AddWithValue("@councellor2", dd_councellor2.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@remark", remark)
+        cmd.Parameters.AddWithValue("@coursefee", coursefee)
 
-        cmd.CommandText = "if exists (select mobileno_fee from fee_collect where mobileno_fee = '" & mobile.Text & "') Update fee_collect set rem_fee =  '" & remfee & "', inst1 = '" & inst1.Text & "', due_date1 = @due_date1, paid1 = '" & paid1.Text & "', pay_date1 = @pay_date1, councellor1 = '" & dd_councellor1.SelectedItem.Text & "', inst2 = '" & inst2.Text & "', due_date2 = @due_date2, paid2 = '" & paid2.Text & "', pay_date2 = @pay_date2, councellor2 = '" & dd_councellor2.SelectedItem.Text & "', remark = '" & remark & "' where mobileno_fee = '" & mobile.Text & "'" & _
+        cmd.CommandText = "if exists (select mobileno_fee from fee_collect where mobileno_fee = @mobile) Update fee_collect set rem_fee = @remfee, inst1 = @inst1, due_date1 = @due_date1, paid1 = @paid1, pay_date1 = @pay_date1, councellor1 = @councellor1, inst2 = @inst2, due_date2 = @due_date2, paid2 = @paid2, pay_date2 = @pay_date2, councellor2 = @councellor2, remark = @remark where mobileno_fee = @mobile" & _
                             " else insert into fee_collect (mobileno_fee,type_fee,course_fee,rem_fee,inst1,due_date1,paid1,pay_date1,councellor1,inst2,due_date2,paid2,pay_date2,councellor2,remark) " & _
-                            " values ('" & mobile.Text & "','No Token + Part Payment','" & coursefee & "','" & remfee & "','" & inst1.Text & "', @due_date1, '" & paid1.Text & "', @pay_date1,'" & dd_councellor1.SelectedItem.Text & "','" & inst2.Text & "', @due_date2, '" & paid2.Text & "', @pay_date2, '" & dd_councellor2.SelectedItem.Text & "', '" & remark & "')"
+                            " values (@mobile,'No Token + Part Payment',@coursefee,@remfee,@inst1,@due_date1,@paid1,@pay_date1,@councellor1,@inst2,@due_date2,@paid2,@pay_date2,@councellor2,@remark)"
         cmd.ExecuteNonQuery()
 
-        cmd.CommandText = "update enquiry_details set status_enq = 'Registered' where mobile = '" & Mobile.Text & "'"
+        cmd.Parameters.Clear()
+        cmd.Parameters.AddWithValue("@mobile", mobile.Text)
+        cmd.CommandText = "update enquiry_details set status_enq = 'Registered' where mobile = @mobile"
         cmd.ExecuteNonQuery()
 
         'MessageBox.Show("Fee Accepted,Student Registered", "FEE ACCEPTED", MessageBoxButtons.OK, MessageBoxIcon.Information)

@@ -59,7 +59,10 @@ Partial Class chead_test_details
             If tBox.Text.Equals("") Then
                 Continue For
             Else
-                cmd.CommandText = "UPDATE ScholarshipReg SET Waiver = '" & tBox.Text & "' WHERE Mobile = '" & theid & "'"
+                cmd.Parameters.Clear()
+                cmd.Parameters.AddWithValue("@waiver", tBox.Text)
+                cmd.Parameters.AddWithValue("@mobile", theid)
+                cmd.CommandText = "UPDATE ScholarshipReg SET Waiver = @waiver WHERE Mobile = @mobile"
                 cmd.ExecuteNonQuery()
                 Page.ClientScript.RegisterStartupScript(Type.GetType("System.String"), "ALERT", "alert('Data Updated');menubar=yes;", True)
             End If
@@ -84,16 +87,22 @@ Partial Class chead_test_details
             Dim theid As String = CoolGridView2.DataKeys(i)(0).ToString()
             Dim cBox As CheckBox = DirectCast(CoolGridView2.Rows(i).FindControl("enquiry"), CheckBox)
             If (cBox.Checked) And (cBox.Enabled = True) Then
-                cmd.CommandText = "insert into enquiry_details(student_name, gender, enq, college, degree, year_sem, branch,course_enq,landline, mobile, email, mode_enq, councellor_name, status_enq) select StudentName,Gender,ExamDate,College,Degree,YearSem,branch,CourseTarget,Landline,Mobile,Email,'Test','Test Counsellor','Not Registered' from ScholarshipReg where Mobile = '" & theid & "'"
+                cmd.Parameters.Clear()
+                cmd.Parameters.AddWithValue("@mobile", theid)
+                cmd.CommandText = "insert into enquiry_details(student_name, gender, enq, college, degree, year_sem, branch,course_enq,landline, mobile, email, mode_enq, councellor_name, status_enq) select StudentName,Gender,ExamDate,College,Degree,YearSem,branch,CourseTarget,Landline,Mobile,Email,'Test','Test Counsellor','Not Registered' from ScholarshipReg where Mobile = @mobile"
                 Try
                     cmd.ExecuteNonQuery()
-                    cmd.CommandText = "UPDATE ScholarshipReg SET EnquiryCreated = 'Enquiry Exists' WHERE Mobile = '" & theid & "'"
+                    cmd.Parameters.Clear()
+                    cmd.Parameters.AddWithValue("@mobile", theid)
+                    cmd.CommandText = "UPDATE ScholarshipReg SET EnquiryCreated = 'Enquiry Exists' WHERE Mobile = @mobile"
                     cmd.ExecuteNonQuery()
                     Page.ClientScript.RegisterStartupScript(Type.GetType("System.String"), "ALERT", "alert('Student Enquiry Created');menubar=yes;", True)
                 Catch ex As Exception
                     If ex.[GetType]().Equals(GetType(SqlException)) Then
                         If ex.Message.Contains("PRIMARY KEY") Then
-                            cmd.CommandText = "UPDATE ScholarshipReg SET EnquiryCreated = 'Enquiry Exists' WHERE Mobile = '" & theid & "'"
+                            cmd.Parameters.Clear()
+                            cmd.Parameters.AddWithValue("@mobile", theid)
+                            cmd.CommandText = "UPDATE ScholarshipReg SET EnquiryCreated = 'Enquiry Exists' WHERE Mobile = @mobile"
                             cmd.ExecuteNonQuery()
                         End If
                     End If

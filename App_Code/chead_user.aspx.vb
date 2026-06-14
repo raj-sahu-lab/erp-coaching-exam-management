@@ -30,7 +30,10 @@ Partial Class chead_user
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "insert into user_login values('" & councellor_name.Text & "', '" & password.Text & "')"
+        Dim hashedPwdC As String = PasswordHelper.HashPassword(password.Text)
+        cmd.CommandText = "insert into user_login values(@username, @password)"
+        cmd.Parameters.AddWithValue("@username", councellor_name.Text)
+        cmd.Parameters.AddWithValue("@password", hashedPwdC)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -58,7 +61,9 @@ Partial Class chead_user
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "delete from user_login where username = '" & dd_councellor_del.SelectedItem.Text & "'"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "delete from user_login where username = @username"
+        cmd.Parameters.AddWithValue("@username", dd_councellor_del.SelectedItem.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -86,7 +91,11 @@ Partial Class chead_user
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "update user_login set password = '" & password_changed.Text & "' where username = '" & dd_councellor_pass.SelectedItem.Text & "'"
+        Dim hashedChangedPwdC As String = PasswordHelper.HashPassword(password_changed.Text)
+        cmd.Parameters.Clear()
+        cmd.CommandText = "update user_login set password = @password where username = @username"
+        cmd.Parameters.AddWithValue("@password", hashedChangedPwdC)
+        cmd.Parameters.AddWithValue("@username", dd_councellor_pass.SelectedItem.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception

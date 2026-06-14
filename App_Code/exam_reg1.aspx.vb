@@ -50,7 +50,8 @@ Partial Class exam_reg
         obj.correct = correct.Text
         obj.wrong = wrong.Text
 
-        cmd.CommandText = "SELECT mobile from enquiry_details where mobile = '" & mobile.Text & "'"
+        cmd.CommandText = "SELECT mobile from enquiry_details where mobile = @mobile"
+        cmd.Parameters.AddWithValue("@mobile", mobile.Text)
         dr = cmd.ExecuteReader()
         If dr.Read() Then
             obj.EnquiryCreated = "Enquiry Exists"
@@ -59,7 +60,9 @@ Partial Class exam_reg
         End If
         dr.Close()
 
-        cmd.CommandText = "SELECT NegativeMarks, PositiveMarks, TotalMarks FROM ExamMaster WHERE ExamDate = CONVERT(datetime, '" & dd_exam_date.SelectedItem.Text & "', 101) AS [MM/DD/YYYY] "
+        cmd.Parameters.Clear()
+        cmd.CommandText = "SELECT NegativeMarks, PositiveMarks, TotalMarks FROM ExamMaster WHERE ExamDate = CONVERT(datetime, @exam_date, 101)"
+        cmd.Parameters.AddWithValue("@exam_date", dd_exam_date.SelectedItem.Text)
         dr = cmd.ExecuteReader()
         If dr.Read() Then
             Dim PositiveMarks As Decimal
@@ -73,7 +76,9 @@ Partial Class exam_reg
         End If
         dr.Close()
 
-        cmd.CommandText = "SELECT Mobile FROM ScholarshipReg WHERE Mobile = '" & mobile.Text & "'"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "SELECT Mobile FROM ScholarshipReg WHERE Mobile = @mobile"
+        cmd.Parameters.AddWithValue("@mobile", mobile.Text)
         dr = cmd.ExecuteReader()
         If dr.Read() Then
             'MessageBox.Show("Student Already Has Given A Test !!", "DATA EXISTS", MessageBoxButtons.OK, MessageBoxIcon.Error)

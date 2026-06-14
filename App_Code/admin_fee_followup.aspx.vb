@@ -28,18 +28,23 @@ Partial Class admin_fee_followup
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "select mobile from enquiry_details where mobile = '" & mobile_search.Text & "'"
+        cmd.CommandText = "select mobile from enquiry_details where mobile = @mobile"
+        cmd.Parameters.AddWithValue("@mobile", mobile_search.Text)
         dr = cmd.ExecuteReader()
         If dr.Read() Then
             dr.Close()
-            cmd.CommandText = "select mobileno_fee, rem_fee from fee_collect where mobileno_fee = '" & mobile_search.Text & "'"
+            cmd.Parameters.Clear()
+            cmd.CommandText = "select mobileno_fee, rem_fee from fee_collect where mobileno_fee = @mobile"
+            cmd.Parameters.AddWithValue("@mobile", mobile_search.Text)
             dr = cmd.ExecuteReader()
             If dr.Read() Then
                 dr.Close()
-                cmd.CommandText = "if exists (select mobileno_followup from fee_followup where mobileno_followup = '" & mobile_search.Text & "')" & _
+                cmd.Parameters.Clear()
+                cmd.Parameters.AddWithValue("@mobile", mobile_search.Text)
+                cmd.CommandText = "if exists (select mobileno_followup from fee_followup where mobileno_followup = @mobile)" & _
                 " SELECT enquiry_details.student_name,enquiry_details.course_enq,fee_collect.rem_fee,fee_collect.remark,fee_followup.* FROM enquiry_details INNER JOIN" & _
                 " fee_collect ON enquiry_details.mobile = fee_collect.mobileno_fee INNER JOIN fee_followup ON fee_collect.mobileno_fee = fee_followup.mobileno_followup" & _
-                " WHERE enquiry_details.mobile = '" & mobile_search.Text & "' else insert into fee_followup (mobileno_followup) values ('" & mobile_search.Text & "')"
+                " WHERE enquiry_details.mobile = @mobile else insert into fee_followup (mobileno_followup) values (@mobile)"
                 cmd.ExecuteNonQuery()
                 dr = cmd.ExecuteReader()
                 If dr.Read() And dr("student_name").Equals(DBNull.Value) Then
@@ -148,11 +153,19 @@ Partial Class admin_fee_followup
             Response.Redirect("session_exp.aspx")
         End Try
 
+        cmd.Parameters.Clear()
         cmd.Parameters.AddWithValue("@date_f_1", date_f1.Text)
         cmd.Parameters.AddWithValue("@date_f_2", date_f2.Text)
         cmd.Parameters.AddWithValue("@date_f_3", date_f3.Text)
+        cmd.Parameters.AddWithValue("@f1", f1.Text)
+        cmd.Parameters.AddWithValue("@councellor_f1", DD_c1.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@f2", f2.Text)
+        cmd.Parameters.AddWithValue("@councellor_f2", DD_c2.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@f3", f3.Text)
+        cmd.Parameters.AddWithValue("@councellor_f3", DD_c3.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@mobile", mobile_search.Text)
 
-        cmd.CommandText = "update fee_followup set f_1 = '" & f1.Text & "', date_f_1 = @date_f_1, councellor_f1 = '" & DD_c1.SelectedItem.Text & "' , f_2 = '" & f2.Text & "', date_f_2 =  @date_f_2, councellor_f2 = '" & DD_c2.SelectedItem.Text & "', f_3 = '" & f3.Text & "', date_f_3 =  @date_f_3, councellor_f3 = '" & DD_c3.SelectedItem.Text & "' where mobileno_followup= '" & mobile_search.Text & "'"
+        cmd.CommandText = "update fee_followup set f_1 = @f1, date_f_1 = @date_f_1, councellor_f1 = @councellor_f1, f_2 = @f2, date_f_2 = @date_f_2, councellor_f2 = @councellor_f2, f_3 = @f3, date_f_3 = @date_f_3, councellor_f3 = @councellor_f3 where mobileno_followup= @mobile"
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -193,7 +206,9 @@ Partial Class admin_fee_followup
             Response.Redirect("session_exp.aspx")
         End Try
 
-        cmd.CommandText = "delete from table fee_followup where mobile = '" & mobile_search.Text & "'"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "delete from fee_followup where mobileno_followup = @mobile"
+        cmd.Parameters.AddWithValue("@mobile", mobile_search.Text)
         cmd.ExecuteNonQuery()
 
         Page.ClientScript.RegisterStartupScript(Type.GetType("System.String"), "ALERT", "alert('Data Deleted.');menubar=yes;", True)

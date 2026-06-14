@@ -16,45 +16,68 @@ Partial Class index
 
     Protected Sub login_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles login.Click
         If dd_role.SelectedItem.Text = "Counsellor" Then
-            cmd.CommandText = "select * from user_login where username=@username and password=@password"
+            cmd.CommandText = "select * from user_login where username=@username"
             cmd.Parameters.AddWithValue("@username", username.Text)
-            cmd.Parameters.AddWithValue("@password", password.Text)
             dr = cmd.ExecuteReader()
             If Not dr.Read Then
                 username.Text = ""
                 password.Text = ""
                 info.Text = "Invalid login Info!!!!!"
             Else
-                Session.Add("uname", dr("username"))
-                Response.Redirect("home.aspx")
+                If Not PasswordHelper.VerifyPassword(password.Text, dr("Password").ToString()) Then
+                    dr.Close()
+                    username.Text = ""
+                    password.Text = ""
+                    info.Text = "Invalid login Info!!!!!"
+                Else
+                    Session.Add("uname", dr("username"))
+                    dr.Close()
+                    Response.Redirect("home.aspx")
+                End If
             End If
 
         ElseIf dd_role.SelectedItem.Text = "Admin" Then
-            cmd.CommandText = "select * from admin_login where username=@username and password=@password"
+            cmd.Parameters.Clear()
+            cmd.CommandText = "select * from admin_login where username=@username"
             cmd.Parameters.AddWithValue("@username", username.Text)
-            cmd.Parameters.AddWithValue("@password", password.Text)
             dr = cmd.ExecuteReader()
             If Not dr.Read Then
                 username.Text = ""
                 password.Text = ""
                 info.Text = "Invalid login Info!!!!!"
             Else
-                Session.Add("a_uname", dr("username"))
-                Response.Redirect("admin_home.aspx")
+                If Not PasswordHelper.VerifyPassword(password.Text, dr("Password").ToString()) Then
+                    dr.Close()
+                    username.Text = ""
+                    password.Text = ""
+                    info.Text = "Invalid login Info!!!!!"
+                Else
+                    Session.Add("a_uname", dr("username"))
+                    dr.Close()
+                    Response.Redirect("admin_home.aspx")
+                End If
             End If
 
         ElseIf dd_role.SelectedItem.Text = "Center Head" Then
-            cmd.CommandText = "select * from center_head_login where username=@username and password=@password"
+            cmd.Parameters.Clear()
+            cmd.CommandText = "select * from center_head_login where username=@username"
             cmd.Parameters.AddWithValue("@username", username.Text)
-            cmd.Parameters.AddWithValue("@password", password.Text)
             dr = cmd.ExecuteReader()
             If Not dr.Read Then
                 username.Text = ""
                 password.Text = ""
                 info.Text = "Invalid login Info!!!!!"
             Else
-                Session.Add("chead_uname", dr("username"))
-                Response.Redirect("chead_home.aspx")
+                If Not PasswordHelper.VerifyPassword(password.Text, dr("Password").ToString()) Then
+                    dr.Close()
+                    username.Text = ""
+                    password.Text = ""
+                    info.Text = "Invalid login Info!!!!!"
+                Else
+                    Session.Add("chead_uname", dr("username"))
+                    dr.Close()
+                    Response.Redirect("chead_home.aspx")
+                End If
             End If
             dr.Close()
         End If

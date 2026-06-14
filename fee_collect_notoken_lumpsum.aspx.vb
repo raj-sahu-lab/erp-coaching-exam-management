@@ -19,7 +19,8 @@ Partial Class fee_collect_notoken_lumpsum
             Dim mob As String
             mob = Session.Item("mobile").ToString()
             mobile.Text = mob
-            cmd.CommandText = "select token_amt, token_date, token_councellor, lumpsum_amount, due_date_lumpsum, paid_lumpsum, pay_date_lumpsum, councellor_lumpsum from fee_collect where mobileno_fee = '" & mob & "'"
+            cmd.CommandText = "select token_amt, token_date, token_councellor, lumpsum_amount, due_date_lumpsum, paid_lumpsum, pay_date_lumpsum, councellor_lumpsum from fee_collect where mobileno_fee = @mob"
+            cmd.Parameters.AddWithValue("@mob", mob)
             dr = cmd.ExecuteReader()
             If dr.Read() Then
                 If dr("lumpsum_amount") Is DBNull.Value Then
@@ -79,15 +80,25 @@ Partial Class fee_collect_notoken_lumpsum
         remfee = Val(coursefee) - Val(paid_lumpsum.Text)
         remark = Session.Item("remark").ToString()
 
+        cmd.Parameters.Clear()
+        cmd.Parameters.AddWithValue("@mobile", mobile.Text)
+        cmd.Parameters.AddWithValue("@remfee", remfee)
+        cmd.Parameters.AddWithValue("@lumpsum_amount", lumpsum_amount.Text)
         cmd.Parameters.AddWithValue("@due_date_lumpsum", due_date_lumpsum.Text)
+        cmd.Parameters.AddWithValue("@paid_lumpsum", paid_lumpsum.Text)
         cmd.Parameters.AddWithValue("@pay_date_lumpsum", pay_date_lumpsum.Text)
+        cmd.Parameters.AddWithValue("@councellor_lumpsum", dd_councellor_lumpsum.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@remark", remark)
+        cmd.Parameters.AddWithValue("@coursefee", coursefee)
 
-        cmd.CommandText = "if exists (select mobileno_fee from fee_collect where mobileno_fee = '" & mobile.Text & "') Update fee_collect set rem_fee =  '" & remfee & "', lumpsum_amount = '" & lumpsum_amount.Text & "', due_date_lumpsum = @due_date_lumpsum, paid_lumpsum = '" & paid_lumpsum.Text & "', pay_date_lumpsum = @pay_date_lumpsum, councellor_lumpsum = '" & dd_councellor_lumpsum.SelectedItem.Text & "', remark = '" & remark & "' where mobileno_fee = '" & mobile.Text & "'" & _
+        cmd.CommandText = "if exists (select mobileno_fee from fee_collect where mobileno_fee = @mobile) Update fee_collect set rem_fee = @remfee, lumpsum_amount = @lumpsum_amount, due_date_lumpsum = @due_date_lumpsum, paid_lumpsum = @paid_lumpsum, pay_date_lumpsum = @pay_date_lumpsum, councellor_lumpsum = @councellor_lumpsum, remark = @remark where mobileno_fee = @mobile" & _
                             " else insert into fee_collect (mobileno_fee,type_fee,course_fee,rem_fee,lumpsum_amount,due_date_lumpsum,paid_lumpsum,pay_date_lumpsum,councellor_lumpsum,remark) " & _
-                            " values ('" & mobile.Text & "','No Token + Lumpsum Payment','" & coursefee & "','" & remfee & "','" & lumpsum_amount.Text & "', @due_date_lumpsum, '" & paid_lumpsum.Text & "', @pay_date_lumpsum,'" & dd_councellor_lumpsum.SelectedItem.Text & "','" & remark & "')"
+                            " values (@mobile,'No Token + Lumpsum Payment',@coursefee,@remfee,@lumpsum_amount,@due_date_lumpsum,@paid_lumpsum,@pay_date_lumpsum,@councellor_lumpsum,@remark)"
         cmd.ExecuteNonQuery()
 
-        cmd.CommandText = "update enquiry_details set status_enq = 'Registered' where mobile = '" & mobile.Text & "'"
+        cmd.Parameters.Clear()
+        cmd.Parameters.AddWithValue("@mobile", mobile.Text)
+        cmd.CommandText = "update enquiry_details set status_enq = 'Registered' where mobile = @mobile"
         cmd.ExecuteNonQuery()
 
         'MessageBox.Show("Fee Accepted,Student Registered", "FEE ACCEPTED", MessageBoxButtons.OK, MessageBoxIcon.Information)

@@ -40,12 +40,15 @@ Partial Class chead_fee_collect
         course_fee.Text = ""
         rem_fee.Text = ""
 
-        cmd.CommandText = "select mobile,status_enq from enquiry_details where mobile = '" & mobile_search.Text & "'"
+        cmd.CommandText = "select mobile,status_enq from enquiry_details where mobile = @mobile"
+        cmd.Parameters.AddWithValue("@mobile", mobile_search.Text)
         dr = cmd.ExecuteReader()
         If dr.Read() Then
             If dr("status_enq").Equals("Registered") Then
                 dr.Close()
-                cmd.CommandText = "SELECT fee_collect.mobileno_fee, fee_collect.type_fee, fee_collect.course_fee, fee_collect.rem_fee, enquiry_details.student_name, enquiry_details.gender, enquiry_details.course_enq, enquiry_details.status_enq, fee_collect.remark FROM fee_collect INNER JOIN enquiry_details ON fee_collect.mobileno_fee = enquiry_details.mobile LEFT OUTER JOIN fee_followup ON enquiry_details.mobile = fee_followup.mobileno_followup WHERE mobileno_fee = '" & mobile_search.Text & "'"
+                cmd.Parameters.Clear()
+                cmd.CommandText = "SELECT fee_collect.mobileno_fee, fee_collect.type_fee, fee_collect.course_fee, fee_collect.rem_fee, enquiry_details.student_name, enquiry_details.gender, enquiry_details.course_enq, enquiry_details.status_enq, fee_collect.remark FROM fee_collect INNER JOIN enquiry_details ON fee_collect.mobileno_fee = enquiry_details.mobile LEFT OUTER JOIN fee_followup ON enquiry_details.mobile = fee_followup.mobileno_followup WHERE mobileno_fee = @mobile"
+                cmd.Parameters.AddWithValue("@mobile", mobile_search.Text)
                 dr = cmd.ExecuteReader()
                 If (dr.Read() And Not (dr("type_fee") Is DBNull.Value)) Then
                     student_name.Text = dr("student_name")
@@ -82,7 +85,9 @@ Partial Class chead_fee_collect
 
                 dr.Close()
                 dd_pay_type.ClearSelection()
-                cmd.CommandText = "SELECT student_name,gender,mobile,course_enq,status_enq FROM enquiry_details WHERE mobile = '" & mobile_search.Text & "'"
+                cmd.Parameters.Clear()
+                cmd.CommandText = "SELECT student_name,gender,mobile,course_enq,status_enq FROM enquiry_details WHERE mobile = @mobile"
+                cmd.Parameters.AddWithValue("@mobile", mobile_search.Text)
                 dr = cmd.ExecuteReader()
                 dr.Read()
                 student_name.Text = dr("student_name")

@@ -53,7 +53,8 @@ Partial Class followup
             Exit Sub
         End Try
 
-        cmd.CommandText = "select * from enquiry_details where mobile='" & mobile.Text & "' "
+        cmd.CommandText = "select * from enquiry_details where mobile=@mobile"
+        cmd.Parameters.AddWithValue("@mobile", mobile.Text)
         dr = cmd.ExecuteReader()
         If Not dr.Read Then
             'MessageBox.Show("Data not found", "NOT FOUND", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -199,14 +200,28 @@ Partial Class followup
             Exit Sub
         End Try
 
+        cmd.Parameters.Clear()
         cmd.Parameters.AddWithValue("@date_f_1", date_f1.Text)
         cmd.Parameters.AddWithValue("@date_f_2", date_f2.Text)
         cmd.Parameters.AddWithValue("@date_f_3", date_f3.Text)
         cmd.Parameters.AddWithValue("@date_f_4", date_f4.Text)
         cmd.Parameters.AddWithValue("@date_f_5", date_f5.Text)
         cmd.Parameters.AddWithValue("@date_f_6", date_f6.Text)
+        cmd.Parameters.AddWithValue("@f1", f1.Text)
+        cmd.Parameters.AddWithValue("@councellor_f1", DD_c1.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@f2", f2.Text)
+        cmd.Parameters.AddWithValue("@councellor_f2", DD_c2.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@f3", f3.Text)
+        cmd.Parameters.AddWithValue("@councellor_f3", DD_c3.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@f4", f4.Text)
+        cmd.Parameters.AddWithValue("@councellor_f4", DD_c4.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@f5", f5.Text)
+        cmd.Parameters.AddWithValue("@councellor_f5", DD_c5.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@f6", f6.Text)
+        cmd.Parameters.AddWithValue("@councellor_f6", DD_c6.SelectedItem.Text)
+        cmd.Parameters.AddWithValue("@mobile", mobile.Text)
 
-        cmd.CommandText = "update enquiry_details set f_1 = '" & f1.Text & "', date_f_1 = @date_f_1, councellor_f1 = '" & DD_c1.SelectedItem.Text & "' , f_2 = '" & f2.Text & "', date_f_2 =  @date_f_2, councellor_f2 = '" & DD_c2.SelectedItem.Text & "', f_3 = '" & f3.Text & "', date_f_3 =  @date_f_3, councellor_f3 = '" & DD_c3.SelectedItem.Text & "', f_4 = '" & f4.Text & "', date_f_4 =  @date_f_4, councellor_f4 = '" & DD_c4.SelectedItem.Text & "', f_5 = '" & f5.Text & "', date_f_5 = @date_f_5, councellor_f5 =  '" & DD_c5.SelectedItem.Text & "', f_6 =  '" & f6.Text & "', date_f_6 = @date_f_6 , councellor_f6 = '" & DD_c6.SelectedItem.Text & "' where mobile= '" & mobile.Text & "'"
+        cmd.CommandText = "update enquiry_details set f_1 = @f1, date_f_1 = @date_f_1, councellor_f1 = @councellor_f1, f_2 = @f2, date_f_2 = @date_f_2, councellor_f2 = @councellor_f2, f_3 = @f3, date_f_3 = @date_f_3, councellor_f3 = @councellor_f3, f_4 = @f4, date_f_4 = @date_f_4, councellor_f4 = @councellor_f4, f_5 = @f5, date_f_5 = @date_f_5, councellor_f5 = @councellor_f5, f_6 = @f6, date_f_6 = @date_f_6, councellor_f6 = @councellor_f6 where mobile= @mobile"
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -259,7 +274,9 @@ Partial Class followup
             Page.ClientScript.RegisterStartupScript(Type.GetType("System.String"), "ALERT", "alert('Search Data To Close Enquiry');menubar=yes;", True)
 
         Else
-            cmd.CommandText = "update enquiry_details set status_enq = 'Closed' where mobile = '" & mobile.Text & "'"
+            cmd.Parameters.Clear()
+            cmd.CommandText = "update enquiry_details set status_enq = 'Closed' where mobile = @mobile"
+            cmd.Parameters.AddWithValue("@mobile", mobile.Text)
             cmd.ExecuteNonQuery()
 
             'MessageBox.Show("Enquiry Closed ", "CLOSED", MessageBoxButtons.OK, MessageBoxIcon.Warning)

@@ -96,12 +96,14 @@ Partial Class admin_fee_details
         For i As Integer = 0 To CoolGridView2.Rows.Count - 1
             Dim theid As String = CoolGridView2.DataKeys(i)(0).ToString()
             Dim cBox As CheckBox = DirectCast(CoolGridView2.Rows(i).FindControl("defaulter"), CheckBox)
+            cmd.Parameters.Clear()
+            cmd.Parameters.AddWithValue("@mobileno", theid)
             If Not (cBox.Checked) Then
-                cmd.CommandText = "UPDATE fee_collect SET defaulter = 'False' WHERE mobileno_fee = '" & theid & "'"
+                cmd.CommandText = "UPDATE fee_collect SET defaulter = 'False' WHERE mobileno_fee = @mobileno"
                 cmd.ExecuteNonQuery()
                 Page.ClientScript.RegisterStartupScript(Type.GetType("System.String"), "ALERT", "alert('Data Updated,Student Removed From Defaulter List');menubar=yes;", True)
             Else
-                cmd.CommandText = "UPDATE fee_collect SET defaulter = 'True' WHERE mobileno_fee = '" & theid & "'"
+                cmd.CommandText = "UPDATE fee_collect SET defaulter = 'True' WHERE mobileno_fee = @mobileno"
                 cmd.ExecuteNonQuery()
                 Page.ClientScript.RegisterStartupScript(Type.GetType("System.String"), "ALERT", "alert('Data Updated, Student Added To Defaulter List');menubar=yes;", True)
             End If

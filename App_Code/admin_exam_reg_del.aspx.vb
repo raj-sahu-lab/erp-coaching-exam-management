@@ -31,11 +31,15 @@ Partial Class admin_exam_reg_del
             'MessageBox.Show("Enter data to find !!", "NOT FOUND", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Page.ClientScript.RegisterStartupScript(Type.GetType("System.String"), "ALERT", "alert('Enter Data To Find');menubar=yes;", True)
 
-        Else : cmd.CommandText = "select Mobile from ScholarshipReg where Mobile = '" & a_mobile_search.Text & "'"
+        Else
+            cmd.CommandText = "select Mobile from ScholarshipReg where Mobile = @mobile"
+            cmd.Parameters.AddWithValue("@mobile", a_mobile_search.Text)
             dr = cmd.ExecuteReader()
             If dr.Read() Then
                 dr.Close()
-                cmd.CommandText = "select mobile, StudentName, Gender, ExamDate, Degree, College, YearSem, branch, CourseTarget, Landline, Email, totalattempts, correct, wrong from ScholarshipReg where Mobile = '" & a_mobile_search.Text & "'"
+                cmd.Parameters.Clear()
+                cmd.CommandText = "select mobile, StudentName, Gender, ExamDate, Degree, College, YearSem, branch, CourseTarget, Landline, Email, totalattempts, correct, wrong from ScholarshipReg where Mobile = @mobile"
+                cmd.Parameters.AddWithValue("@mobile", a_mobile_search.Text)
                 dr = cmd.ExecuteReader()
 
                 If dr.Read() And dr("StudentName").Equals(DBNull.Value) Then
@@ -161,7 +165,9 @@ Partial Class admin_exam_reg_del
             'MessageBox.Show("Search Data To Delete !!", "NO DATA", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Page.ClientScript.RegisterStartupScript(Type.GetType("System.String"), "ALERT", "alert('Search data to delete');menubar=yes;", True)
         End If
-        cmd.CommandText = "DELETE FROM ScholarshipReg WHERE mobile = '" & mobile.Text & "'"
+        cmd.Parameters.Clear()
+        cmd.CommandText = "DELETE FROM ScholarshipReg WHERE mobile = @mobile"
+        cmd.Parameters.AddWithValue("@mobile", mobile.Text)
         Try
             cmd.ExecuteNonQuery()
         Catch ex As Exception
