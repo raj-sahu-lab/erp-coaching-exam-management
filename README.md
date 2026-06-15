@@ -1,5 +1,9 @@
 # Coaching & Exam Management — ERP System
 
+> **Built:** 2014 · ASP.NET 3.5 WebForms · VB.NET · SQL Server
+>
+> This project was built in 2014 as a production ERP for a coaching institute. It predates widespread adoption of parameterized query libraries and password hashing frameworks in small-shop .NET development. The codebase has since been updated (June 2026) with parameterized queries (SqlParameter), PBKDF2 password hashing, and hardened error configuration — while preserving the original architecture and feature set.
+
 A complete ERP system for coaching institutes to manage student enrollments, exam registrations, fee collection, scholarship tracking, and multi-center operations.
 
 > **Note:** This is a 2014 portfolio codebase. SQL queries use string concatenation and passwords are stored without hashing — standard practice before modern OWASP awareness. These would be the first items parameterized and hashed before any production deployment today.
