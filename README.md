@@ -1,4 +1,4 @@
-# Coaching & Exam Management — ERP System
+# Coaching & Exam Management — ERP System (2014)
 
 > **Built:** 2014 · ASP.NET 3.5 WebForms · VB.NET · SQL Server
 >
@@ -84,7 +84,3 @@ A complete ERP system for coaching institutes to manage student enrollments, exa
 ## Note
 
 Deployed for real coaching institutes managing hundreds of students across multiple centers. Handles the complete student lifecycle from inquiry → enrollment → exam → fee collection.
-
----
-
-© 2015 Raj Sahu
